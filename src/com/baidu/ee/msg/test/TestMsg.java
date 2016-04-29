@@ -1,6 +1,8 @@
 package com.baidu.ee.msg.test;
 
+import com.baidu.ee.msg.EmailMsg;
 import com.baidu.ee.msg.factory.EmailMsgCreator;
+import com.baidu.ee.msg.proxy.MsgProxy;
 import com.baidu.ee.msg.service.IMsg;
 import com.baidu.ee.msg.vo.MsgVo;
 
@@ -18,7 +20,13 @@ public class TestMsg {
 		vo.setTo("Susan");
 		vo.setContent("Nice to meet u.How U doing...");
 		//TODO 工厂方法模式可以考虑用动态代理 代替
-		IMsg msg = EmailMsgCreator.getInstance().create(vo);
+		IMsg msg = null;
+//		msg = EmailMsgCreator.getInstance().create(vo);
+//		msg.sendMsg();
+		
+		//动态代理
+		Object target = new EmailMsg(vo);
+		msg = (IMsg)MsgProxy.getInstance().bind(target);
 		msg.sendMsg();
 	}
 
